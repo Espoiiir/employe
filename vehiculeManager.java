@@ -1,25 +1,25 @@
 package employé;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class employeManager {
+public class vehiculeManager {
     private Connection db;
 
-    public employeManager(Connection db) {
+    public vehiculeManager(Connection db) {
         this.setDB(db);
     }
 
-    public void addEmploye(employe employe) {
+    public void addVehicule(vehicule vehicule) {
         try {
             // Utiliser la connexion à la base de données (db) pour exécuter la requête SQL
-            String query = "INSERT INTO employe(nom, prenom, service, joursConges) VALUES (?, ?, ?, ?)";
+            String query = "INSERT INTO vehicules(Type, DateCT, Etat) VALUES (?, ?, ?)";
             try (PreparedStatement statement = db.prepareStatement(query)) {
-                statement.setString(1, employe.getNom());
-                statement.setString(2, employe.getPrenom());
-                statement.setString(3, employe.getService());
-                statement.setInt(4, employe.getJoursConges());
+                statement.setString(1, vehicule.getType());
+                statement.setDate(2, (Date) vehicule.getDate());
+                statement.setBoolean(3, vehicule.getEtat());
 
                 statement.executeUpdate();
             }
@@ -27,10 +27,10 @@ public class employeManager {
             e.printStackTrace();
         }	
     }
-    public void showEmploye() {
+    public void showVehicule() {
         try {
             // Utiliser la connexion à la base de données (db) pour exécuter la requête SQL
-            String query = "SELECT * FROM employe";
+            String query = "SELECT * FROM vehicules";
             try (PreparedStatement statement = db.prepareStatement(query)) {
                 // Exécuter la requête et récupérer le résultat dans un ResultSet
                 ResultSet resultSet = statement.executeQuery();
@@ -38,12 +38,13 @@ public class employeManager {
                 // Parcourir le ResultSet et afficher les informations des employés
                 while (resultSet.next()) {
                     int id = resultSet.getInt("ID");
-                    String nom = resultSet.getString("nom");
-                    String prenom = resultSet.getString("prenom");
-                    String service = resultSet.getString("service");
-                    int joursConges = resultSet.getInt("joursConges");
+                    String type = resultSet.getString("Type");
+                    Date dateCT = resultSet.getDate("dateCT");
+                    boolean Etat = resultSet.getBoolean("Etat");
+                    String EtatText = Etat ? "En état" : "Pas en état";
+                    
 
-                    System.out.println("ID: " + id + ", Nom: " + nom + ", Prénom: " + prenom + ", Service: " + service + ", Jours de congés: " + joursConges);
+                    System.out.println("ID: " + id + ", Type: " + type + ", Date Contrôle Technique: " + dateCT + ", Etat: " + EtatText);
                 }
             }
         } catch (SQLException e) {
@@ -68,5 +69,6 @@ public class employeManager {
             System.out.println("Échec de la connexion à la base de données.");
         }
     }
+  
 
 }

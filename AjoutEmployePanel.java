@@ -19,6 +19,7 @@ public class AjoutEmployePanel extends JPanel {
         prenomField = new JTextField(20);
         serviceField = new JTextField(20);
         JButton addButton = new JButton("Ajouter l'employé");
+        addButton.setBackground(new Color(255, 255, 255));
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -37,6 +38,8 @@ public class AjoutEmployePanel extends JPanel {
         add(new JLabel("Service : "), gbc);
         gbc.gridx = 1;
         add(serviceField, gbc);
+        
+
 
         gbc.gridx = 1;
         gbc.gridy = 3;
@@ -46,10 +49,11 @@ public class AjoutEmployePanel extends JPanel {
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ajouterEmploye();
+               ajouterEmploye();
             }
         });
     }
+    
 
     private void ajouterEmploye() {
         String nom = nomField.getText();

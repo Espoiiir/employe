@@ -10,6 +10,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.border.SoftBevelBorder;
+import javax.swing.border.BevelBorder;
 
 public class AutreFonctionnalitePanel extends JPanel {
     private static final long serialVersionUID = 1L;
@@ -21,13 +23,15 @@ public class AutreFonctionnalitePanel extends JPanel {
         setLayout(new BorderLayout());
 
         JPanel headerPanel = new JPanel();
+        headerPanel.setBackground(new Color(255, 255, 255));
         headerPanel.add(new JLabel("Liste des employés"));
+        setBackground(new Color(0, 64, 128));
 
         // Ajoutez le JPanel au BorderLayout.NORTH (au-dessus) de votre panneau principal
         add(headerPanel, BorderLayout.NORTH);
 
         // Création du modèle de tableau avec des colonnes spécifiques
-        String[] columnNames = {"ID", "Nom", "Prénom", "Service", "Jours de congés restant"};
+        String[] columnNames = {"ID", "Nom", "Prénom", "Service", "Jours de congés"};
         tableModel = new DefaultTableModel(columnNames, 0) {
             private static final long serialVersionUID = 1L;
 
@@ -40,6 +44,9 @@ public class AutreFonctionnalitePanel extends JPanel {
 
         // Création du tableau avec le modèle
         table = new JTable(tableModel);
+        table.setForeground(new Color(0, 0, 0));
+        table.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
+        table.setBackground(new Color(255, 255, 255));
 
         // Ajout d'un écouteur pour détecter les changements dans le modèle de la table
         setupTableModel();
@@ -52,8 +59,11 @@ public class AutreFonctionnalitePanel extends JPanel {
 
         // Création du panneau pour les boutons
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        buttonPanel.setBackground(new Color(255, 255, 255));
         JButton deleteButton = new JButton("Supprimer");
+        deleteButton.setBackground(new Color(255, 255, 255));
         JButton refreshButton = new JButton("Rafraîchir");
+        refreshButton.setBackground(new Color(255, 255, 255));
         // Ajout d'un écouteur d'événements au bouton de rafraîchissement
         refreshButton.addActionListener(new ActionListener() {
             @Override
@@ -116,7 +126,7 @@ public class AutreFonctionnalitePanel extends JPanel {
                     } catch (NumberFormatException ex) {
                         // Gérez le cas où la valeur n'est pas de type Integer
                     	JOptionPane.showMessageDialog(AutreFonctionnalitePanel.this,
-                    	        "La valeur n'est pas de type float.",
+                    	        "La valeur n'est pas un chiffre ou un nombre.",
                     	        "Erreur de conversion",
                     	        JOptionPane.ERROR_MESSAGE);
                     }
@@ -161,7 +171,7 @@ public class AutreFonctionnalitePanel extends JPanel {
             e.printStackTrace();
         }
     }
-
+    
     private void updateDatabase(int row, float newJoursConges) {
         try {
             // Utiliser la connexion à la base de données (db) pour exécuter la requête SQL
